@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  tasks:
+  - name: test file path splitting
+    debug:
+      msg: "Filename is: {{ item.split('/')[-1] }}"
+    with_items:
+      - file/somepath.txt
