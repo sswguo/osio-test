@@ -12,4 +12,4 @@ RUN pip install openshift ansible
 ADD run-operator.sh /usr/local/bin/run-operator.sh
 RUN chmod +x /usr/local/bin/run-operator.sh
 
-ENTRYPOINT /usr/local/bin/run-operator.sh
+ENTRYPOINT ["/usr/local/bin/run-operator.sh"]

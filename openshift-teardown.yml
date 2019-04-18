@@ -14,18 +14,18 @@
           name: "{{ item.name }}"
           namespace: "{{ k8s_namespace }}"
     with_items:
-      - kind: DeploymentConfig
-        name: indy
-      - kind: ImageStream
-        name: indy
-      - kind: PersistentVolumeClaim
-        name: data
-      - kind: ConfigMap
-        name: indy-config
-      - kind: ConfigMap
-        name: indy-logging-config
       - kind: Service
         name: indy
       - kind: Service
         name: indy-proxy
+      - kind: DeploymentConfig
+        name: indy
+      - kind: ConfigMap
+        name: indy-config
+      - kind: ConfigMap
+        name: indy-logging-config
+      - kind: PersistentVolumeClaim
+        name: data
+      - kind: ImageStream
+        name: indy
 
