@@ -1,6 +1,6 @@
 FROM fedora
 
-VOLUME /etc/profile.d
+VOLUME /opt/config
 
 RUN dnf -y update
 RUN dnf -y install python3 python3-pip libselinux-python3 git

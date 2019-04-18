@@ -9,6 +9,7 @@
     src: templates/indy-objects.yml.j2
     dest: generated-files/indy-objects.yml
   vars:
+    namespace: "{{ k8s_namespace }}"
     data_volume: data
     config_volume: indy-config
     logging_config_volume: indy-logging-config
@@ -18,6 +19,7 @@
     src: templates/configmap.yml.j2
     dest: generated-files/indy-config.yml
   vars:
+    namespace: "{{ k8s_namespace }}"
     config_name: indy-config
     files:
       - files/main.conf
@@ -27,12 +29,16 @@
     src: templates/configmap.yml.j2
     dest: generated-files/indy-logging-config.yml
   vars:
+    namespace: "{{ k8s_namespace }}"
     config_name: indy-logging-config
     files:
       - files/logging/logback.xml
 
 - name: Update configs
   k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    user: "{{ k8s_user }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
