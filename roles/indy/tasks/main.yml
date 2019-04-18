@@ -40,15 +40,51 @@
     files:
       - files/logging/logback.xml
 
-- name: Update configs
+- name: Update basic objects
   k8s:
     host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
-    src: "{{ item }}"
-  with_fileglob:
-    - "generated-files/*.yml"
+    src: "generated-files/{{ item }}"
+  with_items:
+    - 010-indy-pvc.yml
+    - 020-indy-is.yml
+  when: push_changes
+
+- name: Update configmaps
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "generated-files/{{ item }}"
+  with_items:
+    - 025-indy-config.yml
+    - 026-indy-logging-config.yml
+  when: push_changes
+
+- name: Update deployment config
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "generated-files/{{ item }}"
+  with_items:
+    - 030-indy-dc.yml
+  when: push_changes
+
+- name: Update services
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "generated-files/{{ item }}"
+  with_items:
+    - 040-indy-httprox-service.yml
+    - 050-indy-service.yml
   when: push_changes
 
 - name: delete generated-files dir
