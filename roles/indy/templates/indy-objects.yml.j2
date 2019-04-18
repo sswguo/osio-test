@@ -1,7 +1,6 @@
 apiVersion: v1
 items:
-- apiVersion: v1
-  kind: PersistentVolumeClaim
+- kind: PersistentVolumeClaim
   metadata:
     name: {{ data_volume }}
     namespace: {{ namespace }}
@@ -13,8 +12,7 @@ items:
         storage: 1Gi
     storageClassName: gp2-encrypted
 
-- apiVersion: v1
-  kind: ImageStream
+- kind: ImageStream
   metadata:
     labels:
       app: {{ app }}
@@ -29,8 +27,7 @@ items:
         referencePolicy:
           type: Source
 
-- apiVersion: v1
-  kind: DeploymentConfig
+- kind: DeploymentConfig
   metadata:
     labels:
       app: {{ app }}
@@ -104,8 +101,7 @@ items:
       type: ImageChange
   status: {}
 
-- apiVersion: v1
-  kind: Service
+- kind: Service
   metadata:
     labels:
       app: {{ app }}
@@ -122,8 +118,7 @@ items:
   status:
     loadBalancer: {}
 
-- apiVersion: v1
-  kind: Service
+- kind: Service
   metadata:
     labels:
       app: {{ app }}
