@@ -1,0 +1,5 @@
+.venv*
+*.pyc
+*.retry
+*license*
+generated-files

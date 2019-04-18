@@ -1,0 +1,120 @@
+<!--
+
+    Copyright (C) 2011 Red Hat, Inc. (jdcasey@commonjava.org)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<configuration>
+
+  <!--TURNED oFF BECAUSE IT CAUSES PERFORMANCE ISSUES-->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{36} - %msg%n</pattern>
+    </encoder>
+
+    <!-- deny all events with a level below INFO, that is TRACE and DEBUG -->
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+  </appender>
+  
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/opt/indy/var/log/indy/indy.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>/opt/indy/var/log/indy/indy.%i.log</fileNamePattern>
+
+      <maxIndex>2</maxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+        <maxFileSize>10MB</maxFileSize>
+    </triggeringPolicy>
+
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{36} %X{http-request-preferred-id} %X{client-addr} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- This appender is used for the operation tracking, like delete or http request path tracking -->
+  <appender name="CONTENT-DELETE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/opt/indy/var/log/indy/indy-content-delete.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>/opt/indy/var/log/indy/indy-content-delete.%i.log</fileNamePattern>
+
+      <maxIndex>1</maxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>10MB</maxFileSize>
+    </triggeringPolicy>
+
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- This appender is used for the operation tracking, like delete or http request path tracking -->
+  <appender name="REST-INBOUND" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/opt/indy/var/log/indy/indy-rest-inbound.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>/opt/indy/var/log/indy/indy-rest-inbound.%i.log</fileNamePattern>
+
+      <maxIndex>1</maxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>10MB</maxFileSize>
+    </triggeringPolicy>
+
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{36} %X{http-request-preferred-id:-no} %X{client-addr:-no} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="org.commonjava.topic.content.delete" level="INFO" additivity="false">
+    <appender-ref ref="CONTENT-DELETE" />
+  </logger>
+
+  <logger name="org.commonjava.topic.rest.inbound" level="INFO" additivity="false">
+    <appender-ref ref="REST-INBOUND" />
+  </logger>
+  
+  <logger name="org.jboss" level="WARN"/>
+  <logger name="org.commonjava.indy.httprox" level="INFO" />
+  <logger name="org.commonjava.indy.promote" level="INFO" />
+  <logger name="org.commonjava.indy.folo" level="INFO" />
+  <logger name="org.commonjava.indy.core.content" level="INFO" />
+  <logger name="org.commonjava.indy.content.index" level="INFO" />
+
+  <!--  TEMPORARY FOR INDY 1.1.x  -->
+  <logger name="org.commonjava.indy.core.content" level="WARN" />
+  <logger name="org.commonjava.indy.core.inject" level="WARN" />
+
+  <logger name="org.commonjava.indy.implrepo.change.ImpliedRepositoryDetector" level="INFO" />
+  
+  <!--
+  <logger name="org.commonjava" level="INFO" />
+  <logger name="org.jboss.resteasy" level="DEBUG"/>
+  -->
+  <logger name="org.commonjava.maven.galley.transport" level="INFO" />
+  <!-- <logger name="org.keycloak" level="TRACE" /> -->
+
+  <root level="INFO">
+    <!--appender-ref ref="STDOUT" /-->
+    <appender-ref ref="FILE" />
+  </root>
+  
+</configuration>

@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  vars:
+    push_changes: no
+    namespace: jdcasey-testing
+  tasks:
+    - name: create generated-files dir
+      file:
+        path: generated-files
+        state: directory
+    
+    - name: Create Indy objects
+      template: 
+        src: templates/indy-objects.yml.j2
+        dest: generated-files/indy-objects.yml
+      vars:
+        app: indy
+        data_volume: data
+        config_volume: indy-config
+        logging_config_volume: indy-logging-config
+
+    - name: generate-indy-config
+      template: 
+        src: templates/configmap.yml.j2
+        dest: generated-files/indy-config.yml
+      vars:
+        app: indy
+        config_name: indy-config
+        path: indy
+        files:
+          - main.conf
+
+    - name: generate-indy-logging-config
+      template: 
+        src: templates/configmap.yml.j2
+        dest: generated-files/indy-logging-config.yml
+      vars:
+        app: indy
+        config_name: indy-logging-config
+        path: indy/logging
+        files:
+          - logback.xml
+
+    - name: Update configs
+      k8s:
+        state: present
+        src: "{{ item }}"
+      with_fileglob:
+        - "generated-files/*.yml"
+      when: push_changes
