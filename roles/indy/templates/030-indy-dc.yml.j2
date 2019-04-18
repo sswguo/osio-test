@@ -39,18 +39,20 @@ spec:
         - mountPath: /opt/indy/var
           name: volume-indy
         - mountPath: /opt/indy/etc/indy
-          name: {{ config_volume }}
+          name: volume-indy-config
         - mountPath: /opt/indy/etc/indy/logging
-          name: {{ logging_config_volume }}
+          name: volume-indy-logging-config
       schedulerName: default-scheduler
       volumes:
       - name: volume-indy
         persistentVolumeClaim:
           claimName: {{ data_volume }}
-      - configMap:
+      - name: volume-indy-config
+        configMap:
           defaultMode: 420
           name: {{ config_volume }}
-      - configMap:
+      - name: volume-indy-logging-config
+        configMap:
           defaultMode: 420
           name: {{ logging_config_volume }}
   test: false
