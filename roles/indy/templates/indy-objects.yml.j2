@@ -1,7 +1,8 @@
+apiVersion: v1
 kind: List
-metadata: {}
 items:
-- kind: PersistentVolumeClaim
+- apiVersion: v1
+  kind: PersistentVolumeClaim
   metadata:
     name: {{ data_volume }}
     namespace: {{ namespace }}
@@ -12,8 +13,8 @@ items:
       requests:
         storage: 1Gi
     storageClassName: gp2-encrypted
-
-- kind: ImageStream
+- apiVersion: v1
+  kind: ImageStream
   metadata:
     labels:
       app: {{ app }}
@@ -27,8 +28,8 @@ items:
         name: latest
         referencePolicy:
           type: Source
-
-- kind: DeploymentConfig
+- apiVersion: v1
+  kind: DeploymentConfig
   metadata:
     labels:
       app: {{ app }}
@@ -71,8 +72,6 @@ items:
             name: {{ config_volume }}
           - mountPath: /opt/indy/etc/indy/logging
             name: {{ logging_config_volume }}
-          # - mountPath: /mnt/secrets
-          #   name: volume-secrets
         schedulerName: default-scheduler
         volumes:
         - name: volume-indy
@@ -84,10 +83,6 @@ items:
         - configMap:
             defaultMode: 420
             name: {{ logging_config_volume }}
-        # - name: volume-secrets
-        #   secret:
-        #     defaultMode: 420
-        #     secretName: indy
     test: false
     triggers:
     - type: ConfigChange
@@ -100,9 +95,8 @@ items:
           name: indy:latest
           namespace: {{ namespace }}
       type: ImageChange
-  status: {}
-
-- kind: Service
+- apiVersion: v1
+  kind: Service
   metadata:
     labels:
       app: {{ app }}
@@ -116,10 +110,8 @@ items:
       targetPort: 8080
     selector:
       deploymentconfig: {{ app }}
-  status:
-    loadBalancer: {}
-
-- kind: Service
+- apiVersion: v1
+  kind: Service
   metadata:
     labels:
       app: {{ app }}
@@ -133,5 +125,3 @@ items:
       targetPort: 8081
     selector:
       deploymentconfig: {{ app }}
-  status:
-    loadBalancer: {}
