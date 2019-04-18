@@ -38,7 +38,7 @@
   k8s:
     host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    user: "{{ k8s_user }}"
+    username: "{{ k8s_user }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
