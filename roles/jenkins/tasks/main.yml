@@ -1,2 +1,4 @@
 ---
-# tasks file for jenkins
+- name: Create and update Jenkins objects
+  import_role:
+    name: openshift-simple-service

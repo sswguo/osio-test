@@ -1,0 +1,17 @@
+---
+- hosts: operators
+  vars:
+    push_changes: no
+  roles:
+    - name: jenkins
+      vars:
+        deploy_env:
+          OPENSHIFT_ENABLE_OAUTH: true
+          OPENSHIFT_ENABLE_REDIRECT_PROMPT: true
+          DISABLE_ADMINISTRATIVE_MONITORS: false
+          KUBERNETES_MASTER: https://kubernetes.default:443
+          KUBERNETES_TRUST_CERTIFICATES: true
+          JENKINS_SERVICE_NAME: jenkins
+          JNLP_SERVICE_NAME: jenkins-jnlp
+          ENABLE_FATAL_ERROR_LOG_FILE: false
+

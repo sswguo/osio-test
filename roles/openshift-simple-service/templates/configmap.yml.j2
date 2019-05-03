@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   labels:
     app: "{{ app }}"
-  name: "{{ config_name }}"
+  name: "{{ item.config_name }}"
   namespace: "{{ namespace }}"
 data:
-{% for f in files %}
+{% for f in item.files %}
   {{ f.split('/')[-1] }}: |
     {% for line in lookup('file', f).splitlines() %}{{ line.rstrip() }}
     {% endfor %}

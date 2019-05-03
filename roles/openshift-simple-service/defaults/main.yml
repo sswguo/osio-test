@@ -1,14 +1,15 @@
 ---
 # defaults file for openshift-simple
-configmaps: []
-secrets: []
-services: []
-volumes: []
-image_stream: no
-deployment_config: no
+# configmaps: []
+# secrets: []
+# services: []
+# volumes: []
+# image_stream: no
+# deployment_config: no
 
-image_name: "{{ app }}"
-namespace: "{{ k8s_namespace }}"
+# image_name: "{{ app }}"
+# namespace: "{{ k8s_namespace }}"
+# image_namespace: "{{ namespace }}"
 
-push_changes: no
-cleanup: no
+# push_changes: no
+# cleanup: no

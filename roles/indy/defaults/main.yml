@@ -1,0 +1,63 @@
+---
+app: indy
+
+image_stream: yes
+deployment_config: yes
+
+image_from: Commonjava/indy:latest
+
+image_name: indy:latest
+image_namespace: jdcasey-testing
+
+res:
+  - cpu: 512Mi
+  - mem: 1Gi
+
+ports:
+  - name: http
+    port: 80
+    target_port: 8080
+    proto: TCP
+
+  - name: http-proxy
+    port: 80
+    target_port: 8081
+    proto: TCP
+
+volumes:
+  - name: indy-data
+    mount_path: /opt/indy/var
+    storage_size: 1Gi
+
+configmaps:
+  - config_name: indy-config
+    mount_path: /opt/indy/etc/indy
+    files:
+      - files/main.conf
+
+  - config_name: indy-logging-config
+    mount_path: /opt/indy/etc/indy/logging
+    files:
+      - files/logging/logback.xml
+
+liveness_probe:
+  failureThreshold: 2
+  httpGet:
+    path: /status
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 420
+  periodSeconds: 360
+  successThreshold: 1
+  timeoutSeconds: 240
+
+readiness_probe:
+  failureThreshold: 3
+  httpGet:
+    path: /status
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 3
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 240

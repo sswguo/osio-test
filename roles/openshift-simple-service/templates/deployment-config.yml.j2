@@ -21,54 +21,101 @@ spec:
       nodeSelector:
         "{{ app }}": "true"
       containers:
-      - image: docker-registry.default.svc:5000/{{ namespace }}/{{ image_name }}:latest
+      - image: {{ image_registry|default('docker-registry.default.svc:5000/') }}/{{ image_namespace|default('openshift') }}/{{ image_name }}
         name: {{ app }}
+{% if deploy_env|default([])|length > 0 %}
+        env:
+{% for (k,v) in deploy_env.items() %}
+          - name: "{{ k }}"
+            value: "{{ v }}"
+{% endfor %}
+{% endif %}
+{% if liveness_probe is defined %}
+        livenessProbe:
+          {{ liveness_probe|to_nice_yaml(indent=2)|indent(10) }}
+{% endif %}
+{% if readiness_probe is defined %}
+        readinessProbe:
+          {{ readiness_probe|to_nice_yaml(indent=2)|indent(10) }}
+{% endif %}
         ports:
-{% for p in services %}
+{% if ports is defined %}
+{% for p in ports %}
         - containerPort: {{ p.target_port }}
           protocol: {{ p.proto }}
 {% endfor %}
+{% endif %}
+{% if (res is defined) or (res_limits is defined) %}
         resources:
+{% if res is defined %}
           requests:
-            cpu: {{ cpu_size }}
-            memory: {{ mem_size }}
+{% if res.cpu is defined %}
+            cpu: {{ res.cpu }}
+{% endif %}
+{% if res.mem is defined %}
+            memory: {{ res.mem }}
+{% endif %}
+{% endif %}
+{% if res_limits is defined %}
           limits:
-            cpu: {{ limit_cpu_size }}
-            memory: {{ limit_mem_size }}
+{% if res_limits.cpu is defined %}
+            cpu: {{ res_limits.cpu }}
+{% endif %}
+{% if res_limits.mem is defined %}
+            memory: {{ res_limits.mem }}
+{% endif %}
+{% endif %}
+{% endif %}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
+{% if volumes is defined %}
 {% for v in volumes %}
         - name: vol-{{ v.name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
+{% endif %}
+{% if configmaps is defined %}
 {% for v in configmaps %}
         - name: vol-{{ v.config_name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
+{% endif %}
+{% if secrets is defined %}
 {% for v in secrets %}
         - name: vol-{{ v.secret_name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
+{% endif %}
       schedulerName: default-scheduler
       volumes:
+{% if volumes is defined %}
 {% for v in volumes %}
       - name: vol-{{ v.name }}
         persistentVolumeClaim:
-          claimName: {{ v.data_volume }}
+          claimName: {{ v.name }}
 {% endfor %}
+{% endif %}
+{% if configmaps is defined %}
 {% for v in configmaps %}
       - name: vol-{{ v.config_name }}
         persistentVolumeClaim:
           defaultMode: {{ v.mount_mode | default(0755) }}
           name: {{ v.config_name }}
 {% endfor %}
+{% endif %}
+{% if secrets is defined %}
 {% for v in secrets %}
       - name: vol-{{ v.secret_name }}
         persistentVolumeClaim:
           defaultMode: {{ v.mount_mode }}
           name: {{ v.secret_name }}
 {% endfor %}
+{% endif %}
+{% if service_account is defined %}
+      serviceAccount: {{ service_account }}
+      serviceAccountName: {{ service_account }}
+{% endif %}
   test: false
   triggers:
   - type: ConfigChange
@@ -78,6 +125,6 @@ spec:
       - {{ app }}
       from:
         kind: ImageStreamTag
-        name: {{ image_name }}:latest
-        namespace: {{ namespace }}
+        name: {{ image_name }}
+        namespace: {{ image_namespace|default('openshift') }}
     type: ImageChange

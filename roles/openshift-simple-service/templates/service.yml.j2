@@ -3,13 +3,13 @@ kind: Service
 metadata:
   labels:
     app: {{ app }}
-  name: {{ name }}
+  name: {{ item.name }}
   namespace: {{ namespace }}
 spec:
   ports:
-  - port: {{ port }}
-    protocol: {{ proto }}
-    targetPort: {{ target_port }}
+  - port: {{ item.port }}
+    protocol: {{ item.proto }}
+    targetPort: {{ item.target_port }}
   selector:
     deploymentconfig: {{ app }}
 
