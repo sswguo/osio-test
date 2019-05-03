@@ -1,5 +1,7 @@
 ---
 # defaults file for openshift-simple
+generated_files: /tmp/generated-files
+
 # configmaps: []
 # secrets: []
 # services: []

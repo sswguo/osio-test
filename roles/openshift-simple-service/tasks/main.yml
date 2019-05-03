@@ -1,47 +1,47 @@
 ---
-- name: "Create generated-files directory"
+- name: "Create {{ generated_files }} directory"
   file:
     state: directory
-    path: "generated-files"
+    path: "{{ generated_files }}"
 
 - name: "Create {{app}} persistent volume claims"
   template: 
     src: "templates/persistent-volume-claim.yml.j2"
-    dest: "generated-files/{{app}}-{{ item.name }}-pvc.yml"
+    dest: "{{ generated_files }}/{{app}}-{{ item.name }}-pvc.yml"
   with_items: "{{volumes}}"
   when: volumes is defined and (volumes|length)>0
 
 - name: "Create {{app}} configmaps"
   template: 
     src: templates/configmap.yml.j2
-    dest: "generated-files/{{app}}-{{item.config_name}}-config.yml"
+    dest: "{{ generated_files }}/{{app}}-{{item.config_name}}-config.yml"
   with_items: "{{configmaps}}"
   when: configmaps is defined and (configmaps|length)>0
 
 - name: "Create {{app}} secrets"
   template: 
     src: templates/secret.yml.j2
-    dest: "generated-files/{{app}}-{{item.secret_name}}-secret.yml"
+    dest: "{{ generated_files }}/{{app}}-{{item.secret_name}}-secret.yml"
   with_items: "{{secrets}}"
   when: secrets is defined and (secrets|length)>0
 
 - name: "Create {{app}} services"
   template: 
     src: templates/service.yml.j2
-    dest: "generated-files/{{app}}-{{item.name}}-service.yml"
+    dest: "{{ generated_files }}/{{app}}-{{item.name}}-service.yml"
   with_items: "{{ports}}"
   when: ports is defined and (ports|length)>0
 
 - name: "Create {{app}} image stream"
   template:
     src: templates/image-stream.yml.j2
-    dest: "generated-files/{{ app }}-is.yml"
+    dest: "{{ generated_files }}/{{ app }}-is.yml"
   when: "image_stream|default(false)|bool == true"
 
 - name: "Create {{app}} deployment config"
   template:
     src: templates/deployment-config.yml.j2
-    dest: "generated-files/{{ app }}-dc.yml"
+    dest: "{{ generated_files }}/{{ app }}-dc.yml"
   when: "deployment_config|default(false)|bool == true"
 
 # only execute below this line when push_changes is true
@@ -53,8 +53,8 @@
     username: "{{ k8s_user }}"
     state: present
     src: "{{ item }}"
-  with_items:
-    - "generated-files/{{app}}-*-pvc.yml"
+  with_fileglob:
+    - "{{ generated_files }}/{{app}}-*-pvc.yml"
   when: "push_changes|default(false)|bool == true"
 
 - name: "Update {{app}} image stream"
@@ -65,7 +65,7 @@
     state: present
     src: "{{ item }}"
   with_fileglob:
-    - "generated-files/{{app}}-is.yml"
+    - "{{ generated_files }}/{{app}}-is.yml"
   when: "push_changes|default(false)|bool == true"
 
 - name: "Update {{app}} configmaps"
@@ -76,7 +76,7 @@
     state: present
     src: "{{ item }}"
   with_fileglob:
-    - "generated-files/{{app}}-*-config.yml"
+    - "{{ generated_files }}/{{app}}-*-config.yml"
   when: "push_changes|default(false)|bool == true"
 
 - name: "Update {{app}} secrets"
@@ -87,7 +87,7 @@
     state: present
     src: "{{ item }}"
   with_fileglob:
-    - "generated-files/{{app}}-*-secret.yml"
+    - "{{ generated_files }}/{{app}}-*-secret.yml"
   when: "push_changes|default(false)|bool == true"
 
 - name: "Update {{app}} deployment config"
@@ -98,7 +98,7 @@
     state: present
     src: "{{ item }}"
   with_fileglob:
-    - "generated-files/{{app}}-dc.yml"
+    - "{{ generated_files }}/{{app}}-dc.yml"
   when: "push_changes|default(false)|bool == true"
 
 - name: "Update {{app}} services"
@@ -107,14 +107,14 @@
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
-    src: "generated-files/{{ item }}"
+    src: "{{ generated_files }}/{{ item }}"
   with_fileglob:
-    - "generated-files/{{app}}-*-service.yml"
+    - "{{ generated_files }}/{{app}}-*-service.yml"
   when: "push_changes|default(false)|bool == true"
 
-- name: delete generated-files dir
+- name: delete {{ generated_files }} dir
   file:
-    path: generated-files
+    path: "{{ generated_files }}"
     state: absent
   when: "cleanup|default(false)|bool == true"
 
