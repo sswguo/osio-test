@@ -107,7 +107,7 @@
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
-    src: "{{ generated_files }}/{{ item }}"
+    src: "{{ item }}"
   with_fileglob:
     - "{{ generated_files }}/{{app}}-*-service.yml"
   when: "push_changes|default(false)|bool == true"
