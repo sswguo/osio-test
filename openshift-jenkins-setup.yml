@@ -5,6 +5,8 @@
   roles:
     - name: jenkins
       vars:
+        push_changes: yes
+  
         deploy_env:
           OPENSHIFT_ENABLE_OAUTH: true
           OPENSHIFT_ENABLE_REDIRECT_PROMPT: true
