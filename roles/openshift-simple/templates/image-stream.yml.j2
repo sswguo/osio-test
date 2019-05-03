@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  labels:
+    app: {{ app }}
+  name: {{ app }}
+  namespace: {{ namespace }}
+spec:
+  tags:
+    - from:
+        kind: DockerImage
+        name: {{ image_from }}
+      name: latest
+      referencePolicy:
+        type: Source

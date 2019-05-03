@@ -5,8 +5,8 @@ metadata:
   namespace: {{ namespace }}
 spec:
   accessModes:
-  - ReadWriteOnce
+  - {{ storage_access }}
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ storage_size }}
   storageClassName: {{ storage_type }}

@@ -1,0 +1,124 @@
+---
+# tasks file for openshift-simple
+- name: "Create {{app}} persistent volume claims"
+  template: 
+    src: "templates/persistent-volume-claim.yml.j2"
+    dest: "generated-files/{{app}}-{{ item.data_volume }}-pvc.yml"
+  vars:
+    namespace: "{{ k8s_namespace }}"
+  with_items: persistent_volume_claims
+  when: persistent_volume_claims is not None and len(persistent_volume_claims) > 0
+
+- name: "Create {{app}} configmaps"
+  template: 
+    src: templates/configmap.yml.j2
+    dest: "generated-files/{{app}}-{{item.config_name}}-config.yml"
+  vars:
+    namespace: "{{ k8s_namespace }}"
+  with_items: configmaps
+  when: configmaps is not None and len(configmaps) > 0
+
+- name: "Create {{app}} secrets"
+  template: 
+    src: templates/secret.yml.j2
+    dest: "generated-files/{{app}}-{{item.secret_name}}-secret.yml"
+  vars:
+    namespace: "{{ k8s_namespace }}"
+  with_items: secrets
+  when: secrets is not None and len(secrets) > 0
+
+- name: "Create {{app}} services"
+  template: 
+    src: templates/service.yml.j2
+    dest: "generated-files/{{app}}-{{item.service_name}}-service.yml"
+  vars:
+    namespace: "{{ k8s_namespace }}"
+  with_items: services
+  when: services is not None and len(services) > 0
+
+- name: "Create {{app}} image stream"
+  template:
+    src: templates/image-stream.yml.j2
+    dest: "generated-files/{{ app }}-is.yml"
+  when: image_stream
+
+- name: "Create {{app}} deployment config"
+  template:
+    src: templates/deployment-config.yml.j2
+    dest: "generated-files/{{ app }}-dc.yml"
+  when: deployment_config
+
+# only execute below this line when push_changes is true
+
+- name: "Update {{app}} persistent volume claims"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "{{ item }}"
+  with_items:
+    - "generated-files/{{app}}-*-pvc.yml"
+  when: push_changes
+
+- name: "Update {{app}} image stream"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "{{ item }}"
+  with_fileglob:
+    - "generated-files/{{app}}-is.yml"
+  when: push_changes
+
+- name: "Update {{app}} configmaps"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "{{ item }}"
+  with_fileglob:
+    - "generated-files/{{app}}-*-config.yml"
+  when: push_changes
+
+- name: "Update {{app}} secrets"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "{{ item }}"
+  with_fileglob:
+    - "generated-files/{{app}}-*-secret.yml"
+  when: push_changes
+
+- name: "Update {{app}} deployment config"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "{{ item }}"
+  with_fileglob:
+    - "generated-files/{{app}}-dc.yml"
+  when: push_changes
+
+- name: "Update {{app}} services"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: present
+    src: "generated-files/{{ item }}"
+  with_fileglob:
+    - "generated-files/{{app}}-*-service.yml"
+  when: push_changes
+
+- name: delete generated-files dir
+  file:
+    path: generated-files
+    state: absent
+  when: push_changes and cleanup
+
