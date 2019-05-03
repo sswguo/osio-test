@@ -1,94 +1,38 @@
 ---
-- name: create generated-files dir
-  file:
-    path: generated-files
-    state: directory
-
-- name: Create Indy objects
-  template: 
-    src: "templates/{{ item }}.j2"
-    dest: "generated-files/{{ item }}"
+- name: Create and update Indy objects
+  import_role:
+    name: openshift-simple-service
   vars:
-    namespace: "{{ k8s_namespace }}"
-    data_volume: data
-    config_volume: indy-config
-    logging_config_volume: indy-logging-config
-  with_items:
-    - 010-indy-pvc.yml
-    - 020-indy-is.yml
-    - 030-indy-dc.yml
-    - 040-indy-httprox-service.yml
-    - 050-indy-service.yml
+    app: indy
+    image_stream: yes
+    image_from: Commonjava/indy
 
-- name: generate-indy-config
-  template: 
-    src: templates/configmap.yml.j2
-    dest: generated-files/025-indy-config.yml
-  vars:
-    namespace: "{{ k8s_namespace }}"
-    config_name: indy-config
-    files:
-      - files/main.conf
+    deployment_config: yes
+    ports:
+      - name: http
+        port: 80
+        target_port: 8080
+        proto: TCP
 
-- name: generate-indy-logging-config
-  template: 
-    src: templates/configmap.yml.j2
-    dest: generated-files/026-indy-logging-config.yml
-  vars:
-    namespace: "{{ k8s_namespace }}"
-    config_name: indy-logging-config
-    files:
-      - files/logging/logback.xml
+      - name: http-proxy
+        port: 80
+        target_port: 8081
+        proto: TCP
 
-- name: Update basic objects
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    username: "{{ k8s_user }}"
-    state: present
-    src: "generated-files/{{ item }}"
-  with_items:
-    - 010-indy-pvc.yml
-    - 020-indy-is.yml
-  when: push_changes
+    volumes:
+      - name: indy-data
+        mount_path: /opt/indy/var
+        data_volume: indy-data
+        storage_size: 1Gi
+        storage_access: ReadWriteOnce
 
-- name: Update configmaps
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    username: "{{ k8s_user }}"
-    state: present
-    src: "generated-files/{{ item }}"
-  with_items:
-    - 025-indy-config.yml
-    - 026-indy-logging-config.yml
-  when: push_changes
+    configmaps:
+      - config_name: indy-config
+        mount_path: /opt/indy/etc/indy
+        files:
+        - files/main.conf
 
-- name: Update deployment config
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    username: "{{ k8s_user }}"
-    state: present
-    src: "generated-files/{{ item }}"
-  with_items:
-    - 030-indy-dc.yml
-  when: push_changes
-
-- name: Update services
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    username: "{{ k8s_user }}"
-    state: present
-    src: "generated-files/{{ item }}"
-  with_items:
-    - 040-indy-httprox-service.yml
-    - 050-indy-service.yml
-  when: push_changes
-
-- name: delete generated-files dir
-  file:
-    path: generated-files
-    state: absent
-  when: push_changes
+      - config_name: indy-logging-config
+        mount_path: /opt/indy/etc/indy/logging
+        files:
+          - files/logging/logback.xml

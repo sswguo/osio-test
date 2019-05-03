@@ -6,8 +6,8 @@
     dest: "generated-files/{{app}}-{{ item.data_volume }}-pvc.yml"
   vars:
     namespace: "{{ k8s_namespace }}"
-  with_items: persistent_volume_claims
-  when: persistent_volume_claims is not None and len(persistent_volume_claims) > 0
+  with_items: volumes
+  when: volumes is not None and len(volumes) > 0
 
 - name: "Create {{app}} configmaps"
   template: 

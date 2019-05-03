@@ -24,7 +24,7 @@ spec:
       - image: docker-registry.default.svc:5000/{{ namespace }}/{{ image_name }}:latest
         name: {{ app }}
         ports:
-{% for p in ports %}
+{% for p in services %}
         - containerPort: {{ p.target_port }}
           protocol: {{ p.proto }}
 {% endfor %}
@@ -38,11 +38,11 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-{% for v in vols %}
+{% for v in volumes %}
         - name: vol-{{ v.name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
-{% for v in configs %}
+{% for v in configmaps %}
         - name: vol-{{ v.config_name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
@@ -52,15 +52,15 @@ spec:
 {% endfor %}
       schedulerName: default-scheduler
       volumes:
-{% for v in vols %}
+{% for v in volumes %}
       - name: vol-{{ v.name }}
         persistentVolumeClaim:
-          claimName: {{ v.claim }}
+          claimName: {{ v.data_volume }}
 {% endfor %}
-{% for v in configs %}
+{% for v in configmaps %}
       - name: vol-{{ v.config_name }}
         persistentVolumeClaim:
-          defaultMode: {{ v.mount_mode }}
+          defaultMode: {{ v.mount_mode | default(0755) }}
           name: {{ v.config_name }}
 {% endfor %}
 {% for v in secrets %}

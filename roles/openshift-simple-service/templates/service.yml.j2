@@ -3,13 +3,13 @@ kind: Service
 metadata:
   labels:
     app: {{ app }}
-  name: {{ app }}-proxy
+  name: {{ name }}
   namespace: {{ namespace }}
 spec:
   ports:
-  - name: 8081-proxy
-    port: 80
-    protocol: TCP
-    targetPort: 8081
+  - port: {{ port }}
+    protocol: {{ proto }}
+    targetPort: {{ target_port }}
   selector:
     deploymentconfig: {{ app }}
+

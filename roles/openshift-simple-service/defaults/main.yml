@@ -3,6 +3,12 @@
 configmaps: []
 secrets: []
 services: []
-persistent_volume_claims: []
+volumes: []
 image_stream: no
 deployment_config: no
+
+image_name: "{{ app }}"
+namespace: "{{ k8s_namespace }}"
+
+push_changes: no
+cleanup: no
