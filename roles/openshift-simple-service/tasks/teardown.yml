@@ -1,0 +1,117 @@
+---
+---
+- name: "Remove {{app}} deployment config"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        name: "{{ app }}"
+        namespace: "{{ namespace }}"
+  when: "deployment_config|default(false)|bool == true"
+
+- name: "Remove {{app}} route"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: Route
+      metadata:
+        name: "{{ app }}"
+        namespace: "{{ namespace }}"
+  when: route|default(false)|bool
+
+- name: "Remove {{app}} service account"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: "{{ app }}"
+        namespace: "{{ namespace }}"
+  when: service_account|default(false)|bool
+
+- name: "Remove {{app}} image stream"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: ImageStream
+      metadata:
+        name: "{{ app }}"
+        namespace: "{{ namespace }}"
+  when: "image_stream|default(false)|bool == true"
+
+- name: "Remove {{app}} services"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: "{{ item.name }}"
+        namespace: "{{ namespace }}"
+  with_items: "{{ports}}"
+  when: ports is defined and (ports|length)>0
+
+- name: "Remove {{app}} secrets"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ item.secret_name }}"
+        namespace: "{{ namespace }}"
+  with_items: "{{secrets}}"
+  when: secrets is defined and (secrets|length)>0
+
+- name: "Remove {{app}} configmaps"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ item.config_name }}"
+        namespace: "{{ namespace }}"
+  with_items: "{{configmaps}}"
+  when: configmaps is defined and (configmaps|length)>0
+
+- name: "Remove {{app}} persistent volume claims"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    username: "{{ k8s_user }}"
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ item.name }}"
+        namespace: "{{ namespace }}"
+  with_items: "{{volumes}}"
+  when: volumes is defined and (volumes|length)>0
