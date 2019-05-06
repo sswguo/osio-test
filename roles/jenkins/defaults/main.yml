@@ -4,7 +4,8 @@ app: jenkins
 image_stream: no
 deployment_config: yes
 
-image_name: jenkins:2
+image_name: jenkins
+image_tag: "2"
 # image_namespace: openshift
 service_account: jenkins
 

@@ -6,7 +6,7 @@ deployment_config: yes
 
 image_from: Commonjava/indy:latest
 
-image_name: indy:latest
+image_name: indy
 image_namespace: jdcasey-testing
 
 res:

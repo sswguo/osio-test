@@ -2,6 +2,7 @@
 
 DO_RUN=${RUN:-true}
 echo "Run? $DO_RUN"
+echo "Extras? $EXTRAS_FILE"
 
 rm -rf /opt/operations
 git clone https://github.com/jdcasey/osio-test.git /opt/operations
@@ -13,7 +14,11 @@ if [ "$DO_RUN" == "false" ]; then
 else
 	echo "Running playbook"
 
+	if [ "x${EXTRAS_FILE}" != "x" ]; then
+		EXTRAS="-e @/opt/config/$EXTRAS_FILE"
+	fi
+
 	set -x
-	ansible-playbook -i ./hosts -c local -e @/opt/config/osio-extras-jdcasey.yml -e push_changes=true "$@"
+	ansible-playbook -i ./hosts -c local $EXTRAS -e push_changes=true "$@"
 fi
 
