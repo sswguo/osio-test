@@ -1,5 +1,4 @@
 ---
----
 - name: "Remove {{app}} deployment config"
   k8s:
     host: "{{ k8s_host }}"
