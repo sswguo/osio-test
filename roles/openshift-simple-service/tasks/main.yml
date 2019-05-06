@@ -1,9 +1,13 @@
 ---
+- name: "Debug teardown flag"
+  debug:
+    msg: "Teardown {{ app }}? {{ service_teardown|default(false)|bool }}"
+
 - name: "Include setup tasks for {{ app }}"
   include: setup.yml
   when: service_teardown|default(false)|bool == false
 
 - name: "Include teardown tasks for {{ app }}"
   include: teardown.yml
-  when: service_teardown|default(false)|bool
+  when: service_teardown|default(false)|bool == true
 
