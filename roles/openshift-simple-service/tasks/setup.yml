@@ -48,8 +48,7 @@
 
 - name: "Update {{app}} persistent volume claims"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
@@ -60,8 +59,7 @@
 
 - name: "Update {{app}} image stream"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
@@ -72,8 +70,7 @@
 
 - name: "Update {{app}} configmaps"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
@@ -84,8 +81,7 @@
 
 - name: "Update {{app}} secrets"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
@@ -96,8 +92,7 @@
 
 - name: "Update {{app}} deployment config"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present
@@ -108,8 +103,7 @@
 
 - name: "Update {{app}} services"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: present

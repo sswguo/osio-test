@@ -1,8 +1,7 @@
 ---
 - name: "Remove {{app}} deployment config"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -16,8 +15,7 @@
 
 - name: "Remove {{app}} route"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -31,8 +29,7 @@
 
 - name: "Remove {{app}} service account"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -46,8 +43,7 @@
 
 - name: "Remove {{app}} image stream"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -61,8 +57,7 @@
 
 - name: "Remove {{app}} services"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -77,8 +72,7 @@
 
 - name: "Remove {{app}} secrets"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -93,8 +87,7 @@
 
 - name: "Remove {{app}} configmaps"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
@@ -109,8 +102,7 @@
 
 - name: "Remove {{app}} persistent volume claims"
   k8s:
-    host: "{{ k8s_host }}"
-    port: "{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
     username: "{{ k8s_user }}"
     state: absent
