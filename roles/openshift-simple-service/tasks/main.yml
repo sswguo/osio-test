@@ -2,6 +2,15 @@
 - name: "Check {{ app }} teardown flag"
   debug:
     msg: "Teardown {{ app }}? {{ service_teardown|default(false)|bool }}"
+  when: debug|default(false)|bool
+
+- name: "Debug {{app}} k8s connection"
+  debug:
+    msg:| 
+      "host: {{ k8s_host }}
+      port: {{ k8s_port|default(443) }}
+      username: {{ k8s_user }}"
+  when: debug|default(false)|bool
 
 - name: "Include setup tasks for {{ app }}"
   include: setup.yml
