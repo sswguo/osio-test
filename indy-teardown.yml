@@ -1,31 +1,6 @@
 ---
 - hosts: operators
-  tasks:
-  - name: remove all objects
-    k8s:
-      host: "{{ k8s_host }}"
-      api_key: "{{ k8s_api_key }}"
-      username: "{{ k8s_user }}"
-      state: absent
-      definition:
-        apiVersion: v1
-        kind: "{{ item.kind }}"
-        metadata:
-          name: "{{ item.name }}"
-          namespace: "{{ k8s_namespace }}"
-    with_items:
-      - kind: Service
-        name: indy
-      - kind: Service
-        name: indy-proxy
-      - kind: DeploymentConfig
-        name: indy
-      - kind: ConfigMap
-        name: indy-config
-      - kind: ConfigMap
-        name: indy-logging-config
-      - kind: PersistentVolumeClaim
-        name: data
-      - kind: ImageStream
-        name: indy
-
+  vars:
+    service_teardown: yes
+  roles:
+    - name: indy

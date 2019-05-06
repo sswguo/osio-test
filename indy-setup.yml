@@ -1,6 +1,4 @@
 ---
 - hosts: operators
-  vars:
-    push_changes: no
   roles:
     - indy

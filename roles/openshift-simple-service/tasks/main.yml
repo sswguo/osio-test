@@ -1,5 +1,5 @@
 ---
-- name: "Debug teardown flag"
+- name: "Check {{ app }} teardown flag"
   debug:
     msg: "Teardown {{ app }}? {{ service_teardown|default(false)|bool }}"
 
