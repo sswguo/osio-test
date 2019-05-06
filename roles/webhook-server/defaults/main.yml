@@ -12,11 +12,11 @@ image_namespace: "{{ namespace }}"
 #service_account: jenkins
 
 res:
-  cpu: 16Mi
+  # cpu: 16Mi
   mem: 128Mi
 
 res_limits:
-  cpu: 16Mi
+  # cpu: 16Mi
   mem: 128Mi
 
 ports:
