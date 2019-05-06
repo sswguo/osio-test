@@ -1,5 +1,11 @@
 #!/bin/bash
 
+shopt -s nullglob dotglob
+files=(/etc/pki/ca-trust/source/anchors/*)
+if [ ${#files[@]} -gt 0 ]; then
+	update-ca-trust extract
+fi
+
 DO_RUN=${RUN:-true}
 echo "Run? $DO_RUN"
 echo "Extras? $EXTRAS_FILE"
