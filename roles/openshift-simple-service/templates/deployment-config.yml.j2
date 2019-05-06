@@ -47,7 +47,7 @@ spec:
 {% endif %}
 {% if (res is defined) or (res_limits is defined) %}
         resources:
-{% if res is defined %}
+{% if res is defined and (res.cpu is defined or res.mem is defined) %}
           requests:
 {% if res.cpu is defined %}
             cpu: {{ res.cpu }}
@@ -56,7 +56,7 @@ spec:
             memory: {{ res.mem }}
 {% endif %}
 {% endif %}
-{% if res_limits is defined %}
+{% if res_limits is defined and (res_limits.cpu is defined or res_limits.mem is defined) %}
           limits:
 {% if res_limits.cpu is defined %}
             cpu: {{ res_limits.cpu }}
