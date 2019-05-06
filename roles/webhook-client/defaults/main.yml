@@ -1,0 +1,48 @@
+---
+app: webhook-client
+
+image_stream: yes
+image_from: indyperf/indyperf-ws-client:latest
+
+deployment_config: yes
+
+image_name: webhook-client
+# image_namespace: openshift
+#service_account: jenkins
+
+# res:
+#   - cpu: 512Mi
+#   - mem: 1Gi
+
+# ports:
+#   - name: webhook
+#     port: 80
+#     target_port: 8182
+#     proto: TCP
+
+# volumes:
+#   - name: webhook-logs
+#     mount_path: /var/lib/webhook
+#     storage_size: 1Gi
+
+# liveness_probe:
+#   failureThreshold: 2
+#   httpGet:
+#     path: /
+#     port: 8182
+#     scheme: HTTP
+#   initialDelaySeconds: 420
+#   periodSeconds: 360
+#   successThreshold: 1
+#   timeoutSeconds: 240
+
+# readiness_probe:
+#   failureThreshold: 3
+#   httpGet:
+#     path: /
+#     port: 8182
+#     scheme: HTTP
+#   initialDelaySeconds: 3
+#   periodSeconds: 10
+#   successThreshold: 1
+#   timeoutSeconds: 240

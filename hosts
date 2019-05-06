@@ -1,2 +1,8 @@
 [operators]
 localhost namespace=jdcasey-testing
+
+[osio]
+localhost namespace=jdcasey-testing
+
+[internal]
+localhost namespace=jdcasey-testing

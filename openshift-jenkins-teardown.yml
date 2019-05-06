@@ -15,9 +15,9 @@
           namespace: "{{ k8s_namespace }}"
     with_items:
       - kind: Service
-        name: web
+        name: jenkins-web
       - kind: Service
-        name: agent
+        name: jenkins-agent
       - kind: DeploymentConfig
         name: jenkins
       - kind: PersistentVolumeClaim

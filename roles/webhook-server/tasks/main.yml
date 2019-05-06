@@ -1,0 +1,4 @@
+---
+- name: Create and update Webhook server objects
+  import_role:
+    name: openshift-simple-service

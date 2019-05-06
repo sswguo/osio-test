@@ -1,38 +1,35 @@
 ---
-app: jenkins
+app: webhook-server
 
-image_stream: no
+image_stream: yes
+image_from: indyperf/indyperf-ws-server:latest
+
 deployment_config: yes
 
-image_name: jenkins:2
+image_name: webhook-server
 # image_namespace: openshift
-service_account: jenkins
+#service_account: jenkins
 
-res:
-  - cpu: 512Mi
-  - mem: 1Gi
+# res:
+#   - cpu: 512Mi
+#   - mem: 1Gi
 
 ports:
-  - name: jenkins
+  - name: webhook
     port: 80
-    target_port: 8080
-    proto: TCP
-
-  - name: jenkins-jnlp
-    port: 50000
-    target_port: 50000
+    target_port: 8182
     proto: TCP
 
 volumes:
-  - name: jenkins-data
-    mount_path: /var/lib/jenkins
+  - name: webhook-logs
+    mount_path: /var/lib/webhook
     storage_size: 1Gi
 
 liveness_probe:
   failureThreshold: 2
   httpGet:
-    path: /login
-    port: 8080
+    path: /
+    port: 8182
     scheme: HTTP
   initialDelaySeconds: 420
   periodSeconds: 360
@@ -42,8 +39,8 @@ liveness_probe:
 readiness_probe:
   failureThreshold: 3
   httpGet:
-    path: /login
-    port: 8080
+    path: /
+    port: 8182
     scheme: HTTP
   initialDelaySeconds: 3
   periodSeconds: 10

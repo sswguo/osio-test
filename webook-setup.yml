@@ -1,0 +1,9 @@
+---
+- hosts: osio
+  roles:
+    - webhook-server
+
+- hosts: internal
+  roles:
+    - webhook-client
+
