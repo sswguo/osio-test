@@ -2,7 +2,7 @@
 app: webhook-server
 
 image_stream: yes
-image_from: indyperf/indyperf-ws-server:latest
+image_from: docker.io/indyperf/indyperf-ws-server:latest
 
 deployment_config: yes
 
