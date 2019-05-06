@@ -7,7 +7,7 @@ image_from: docker.io/indyperf/indyperf-ws-server:5.3
 deployment_config: yes
 
 image_name: webhook-server
-image_namespace: {{ namespace }}
+image_namespace: "{{ namespace }}"
 
 #service_account: jenkins
 
