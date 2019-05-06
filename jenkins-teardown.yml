@@ -22,4 +22,8 @@
         name: jenkins
       - kind: PersistentVolumeClaim
         name: jenkins-data
+      - kind: Route
+        name: jenkins
+      - kind: ServiceAccount
+        name: jenkins
 
