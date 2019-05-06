@@ -7,7 +7,8 @@ image_from: docker.io/indyperf/indyperf-ws-client:5.3
 deployment_config: yes
 
 image_name: webhook-client
-# image_namespace: openshift
+image_namespace: {{ namespace }}
+
 #service_account: jenkins
 
 # res:
