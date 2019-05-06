@@ -18,8 +18,10 @@ spec:
       labels:
         deploymentconfig: {{ app }}
     spec:
+{% if node_selector|default(false)|bool == true %}
       nodeSelector:
-        "{{ app }}": "true"
+        {{ node_selector|default('"{{ app }}": "true"')|to_nice_yaml(indent=2)|indent(8)}}
+{% endif %}
       containers:
       - image: {{ image_registry|default('docker-registry.default.svc:5000') }}/{{ image_namespace|default('openshift') }}/{{ image_name }}
         name: {{ app }}
