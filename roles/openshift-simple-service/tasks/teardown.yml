@@ -1,9 +1,9 @@
 ---
 - name: "Remove {{app}} deployment config"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -16,9 +16,9 @@
 
 - name: "Remove {{app}} route"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -31,9 +31,9 @@
 
 - name: "Remove {{app}} service account"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -46,9 +46,9 @@
 
 - name: "Remove {{app}} image stream"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -61,9 +61,9 @@
 
 - name: "Remove {{app}} services"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -77,9 +77,9 @@
 
 - name: "Remove {{app}} secrets"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -93,9 +93,9 @@
 
 - name: "Remove {{app}} configmaps"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -109,9 +109,9 @@
 
 - name: "Remove {{app}} persistent volume claims"
   k8s:
-    host: "{{ k8s_host }}"
-    # host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
     api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
