@@ -25,11 +25,6 @@ ports:
     target_port: 8182
     proto: TCP
 
-volumes:
-  - name: webhook-logs
-    mount_path: /var/lib/webhook
-    storage_size: 1Gi
-
 liveness_probe:
   failureThreshold: 2
   httpGet:

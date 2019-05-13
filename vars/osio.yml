@@ -1,0 +1,9 @@
+---
+k8s_host: "{{ osio_k8s_host }}"
+k8s_user: "{{ osio_k8s_user }}"
+k8s_api_key: "{{ osio_k8s_api_key }}"
+k8s_namespace: "{{ osio_k8s_namespace }}"
+k8s_verify_ssl: "{{ osio_k8s_verify_ssl|default(true) }}"
+
+storage_type: "{{ osio_storage_type|default('gp2-encrypted') }}"
+namespace: "{{ osio_namespace }}"

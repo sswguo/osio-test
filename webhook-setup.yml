@@ -1,8 +1,12 @@
 ---
-- hosts: osio
+- hosts: operators
+  vars_files:
+    - vars/osio.yml
   roles:
     - webhook-server
 
-# - hosts: internal
-#   roles:
-#     - webhook-client
+- hosts: operators
+  vars_files: 
+    - vars/internal.yml
+  roles:
+    - name: webhook-client

@@ -4,41 +4,41 @@
     state: directory
     path: "{{ generated_files }}"
 
-- name: "Create {{app}} persistent volume claims"
+- name: "Create {{namespace}}:{{app}} persistent volume claims"
   template: 
     src: "templates/persistent-volume-claim.yml.j2"
     dest: "{{ generated_files }}/{{app}}-{{ item.name }}-pvc.yml"
   with_items: "{{volumes}}"
   when: volumes is defined and (volumes|length)>0
 
-- name: "Create {{app}} configmaps"
+- name: "Create {{namespace}}:{{app}} configmaps"
   template: 
     src: templates/configmap.yml.j2
     dest: "{{ generated_files }}/{{app}}-{{item.config_name}}-config.yml"
   with_items: "{{configmaps}}"
   when: configmaps is defined and (configmaps|length)>0
 
-- name: "Create {{app}} secrets"
+- name: "Create {{namespace}}:{{app}} secrets"
   template: 
     src: templates/secret.yml.j2
     dest: "{{ generated_files }}/{{app}}-{{item.secret_name}}-secret.yml"
   with_items: "{{secrets}}"
   when: secrets is defined and (secrets|length)>0
 
-- name: "Create {{app}} services"
+- name: "Create {{namespace}}:{{app}} services"
   template: 
     src: templates/service.yml.j2
     dest: "{{ generated_files }}/{{app}}-{{item.name}}-service.yml"
   with_items: "{{ports}}"
   when: ports is defined and (ports|length)>0
 
-- name: "Create {{app}} image stream"
+- name: "Create {{namespace}}:{{app}} image stream"
   template:
     src: templates/image-stream.yml.j2
     dest: "{{ generated_files }}/{{ app }}-is.yml"
   when: "image_stream|default(false)|bool == true"
 
-- name: "Create {{app}} deployment config"
+- name: "Create {{namespace}}:{{app}} deployment config"
   template:
     src: templates/deployment-config.yml.j2
     dest: "{{ generated_files }}/{{ app }}-dc.yml"
@@ -46,72 +46,78 @@
 
 # only execute below this line when push_changes is true
 
-- name: "Update {{app}} persistent volume claims"
+- name: "Update {{namespace}}:{{app}} persistent volume claims"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
     - "{{ generated_files }}/{{app}}-*-pvc.yml"
   when: "push_changes|default(false)|bool == true"
 
-- name: "Update {{app}} image stream"
+- name: "Update {{namespace}}:{{app}} image stream"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
     - "{{ generated_files }}/{{app}}-is.yml"
   when: "push_changes|default(false)|bool == true"
 
-- name: "Update {{app}} configmaps"
+- name: "Update {{namespace}}:{{app}} configmaps"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
     - "{{ generated_files }}/{{app}}-*-config.yml"
   when: "push_changes|default(false)|bool == true"
 
-- name: "Update {{app}} secrets"
+- name: "Update {{namespace}}:{{app}} secrets"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
     - "{{ generated_files }}/{{app}}-*-secret.yml"
   when: "push_changes|default(false)|bool == true"
 
-- name: "Update {{app}} deployment config"
+- name: "Update {{namespace}}:{{app}} deployment config"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
     state: present
     src: "{{ item }}"
   with_fileglob:
     - "{{ generated_files }}/{{app}}-dc.yml"
   when: "push_changes|default(false)|bool == true"
 
-- name: "Update {{app}} services"
+- name: "Update {{namespace}}:{{app}} services"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
     state: present
     src: "{{ item }}"
   with_fileglob:

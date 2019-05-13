@@ -6,9 +6,11 @@
 
 - name: "Debug {{app}} k8s connection"
   debug:
-    msg: |-
-      host: {{ k8s_host }}:{{ k8s_port|default(443) }}
+    msg: |+
+      host: {{ k8s_host }}
       username: {{ k8s_user }}
+      namespace: {{ k8s_namespace }}
+      verify_ssl: {{ k8s_verify_ssl }}
   when: debug|default(false)|bool
 
 - name: "Include setup tasks for {{ app }}"

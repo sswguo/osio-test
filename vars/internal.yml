@@ -1,0 +1,9 @@
+---
+k8s_host: "{{ internal_k8s_host }}"
+k8s_user: "{{ internal_k8s_user }}"
+k8s_api_key: "{{ internal_k8s_api_key }}"
+k8s_namespace: "{{ internal_k8s_namespace }}"
+k8s_verify_ssl: "{{ internal_k8s_verify_ssl }}"
+
+storage_type: "{{ internal_storage_type }}"
+namespace: "{{ internal_namespace }}"

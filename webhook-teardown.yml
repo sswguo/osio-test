@@ -1,11 +1,15 @@
 ---
-- hosts: osio
+- hosts: operators
+  vars_files:
+    - vars/osio.yml
   vars:
     service_teardown: yes
   roles:
     - webhook-server
 
-- hosts: internal
+- hosts: operators
+  vars_files:
+    - vars/internal.yml
   vars:
     service_teardown: yes
   roles:

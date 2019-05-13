@@ -1,9 +1,9 @@
 ---
-- name: "Remove {{app}} deployment config"
+- name: "Remove {{namespace}}:{{app}} deployment config"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -12,13 +12,16 @@
       metadata:
         name: "{{ app }}"
         namespace: "{{ namespace }}"
+  with_items:
+    - DeploymentConfig
+    - ReplicationController
   when: "deployment_config|default(false)|bool == true"
 
-- name: "Remove {{app}} route"
+- name: "Remove {{namespace}}:{{app}} route"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -29,11 +32,11 @@
         namespace: "{{ namespace }}"
   when: route|default(false)|bool
 
-- name: "Remove {{app}} service account"
+- name: "Remove {{namespace}}:{{app}} service account"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -44,11 +47,11 @@
         namespace: "{{ namespace }}"
   when: service_account|default(false)|bool
 
-- name: "Remove {{app}} image stream"
+- name: "Remove {{namespace}}:{{app}} image stream"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -59,11 +62,11 @@
         namespace: "{{ namespace }}"
   when: "image_stream|default(false)|bool == true"
 
-- name: "Remove {{app}} services"
+- name: "Remove {{namespace}}:{{app}} services"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -75,11 +78,11 @@
   with_items: "{{ports}}"
   when: ports is defined and (ports|length)>0
 
-- name: "Remove {{app}} secrets"
+- name: "Remove {{namespace}}:{{app}} secrets"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -91,11 +94,11 @@
   with_items: "{{secrets}}"
   when: secrets is defined and (secrets|length)>0
 
-- name: "Remove {{app}} configmaps"
+- name: "Remove {{namespace}}:{{app}} configmaps"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
@@ -107,11 +110,11 @@
   with_items: "{{configmaps}}"
   when: configmaps is defined and (configmaps|length)>0
 
-- name: "Remove {{app}} persistent volume claims"
+- name: "Remove {{namespace}}:{{app}} persistent volume claims"
   k8s:
-    host: "{{ k8s_host }}:{{ k8s_port|default(443) }}"
+    host: "{{ k8s_host }}"
     api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
     username: "{{ k8s_user }}"
     state: absent
     definition:
