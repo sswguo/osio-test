@@ -1,8 +1,4 @@
 ---
 - hosts: operators
-
-  vars_files:
-  - /opt/operations/group_vars/secret.yml
- 
   roles:
     - indy
