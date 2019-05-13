@@ -1,7 +1,7 @@
 ---
 # defaults file for openshift-simple
 generated_files: /tmp/generated-files
-
+namespace: nos-local
 # configmaps: []
 # secrets: []
 # services: []

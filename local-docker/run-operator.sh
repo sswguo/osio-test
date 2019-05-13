@@ -11,9 +11,12 @@ echo "Run? $DO_RUN"
 echo "Extras? $EXTRAS_FILE"
 
 rm -rf /opt/operations
-git clone https://github.com/jdcasey/osio-test.git /opt/operations
+git clone https://github.com/sswguo/osio-test.git /opt/operations
 
 cd /opt/operations
+
+cp /opt/config/secret.yml ./group_vars/osio.yml
+
 if [ "$DO_RUN" == "false" ]; then
 	echo "Starting debug shell"
 	exec /bin/bash -l
