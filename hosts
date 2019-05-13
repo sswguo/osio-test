@@ -1,8 +1,8 @@
 [operators]
-localhost namespace=jdcasey-testing
+localhost namespace=nos-local
 
 [osio]
-localhost namespace=jdcasey-testing
+localhost namespace=nos-local
 
 [internal]
-localhost namespace=jdcasey-testing
+localhost namespace=nos-local
