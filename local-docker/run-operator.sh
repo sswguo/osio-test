@@ -15,6 +15,11 @@ git clone https://github.com/sswguo/osio-test.git /opt/operations
 
 cd /opt/operations
 
+# Copy the secret file into group vars
+# ---
+# k8s_host: api.starter-us-east-1.openshift.com
+# k8s_user: wguo@redhat.com
+# k8s_api_key: 
 cp /opt/config/secret.yml ./group_vars/osio.yml
 
 if [ "$DO_RUN" == "false" ]; then
