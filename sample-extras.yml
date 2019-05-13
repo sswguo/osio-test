@@ -1,0 +1,17 @@
+internal_k8s_host: https://internal.kube.host
+internal_k8s_user: internal_user
+internal_k8s_api_key: <INTERNAL-TOKEN>
+internal_k8s_namespace: internal-namespace
+internal_k8s_verify_ssl: no
+
+internal_storage_type: dynamic-nfs
+internal_namespace: internal-namespace
+
+
+osio_k8s_host: https://api.starter-us-west-2.openshift.com
+osio_k8s_user: user@email.com
+osio_k8s_api_key: <OSIO-TOKEN>
+osio_k8s_namespace: osio-namespace
+
+osio_storage_type: gp2-encrypted
+osio_namespace: osio-namespace
