@@ -1,8 +1,6 @@
 ---
 app: indy
 
-k8s_host: <omitted>
-
 image_stream: yes
 deployment_config: yes
 
