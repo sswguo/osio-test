@@ -79,13 +79,13 @@ spec:
 {% endif %}
 {% if configmaps is defined %}
 {% for v in configmaps %}
-        - name: vol-{{ v.config_name }}
+        - name: vol-{{ v.name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
 {% endif %}
 {% if secrets is defined %}
 {% for v in secrets %}
-        - name: vol-{{ v.secret_name }}
+        - name: vol-{{ v.name }}
           mountPath: {{ v.mount_path }}
 {% endfor %}
 {% endif %}
@@ -100,18 +100,18 @@ spec:
 {% endif %}
 {% if configmaps is defined %}
 {% for v in configmaps %}
-      - name: vol-{{ v.config_name }}
+      - name: vol-{{ v.name }}
         persistentVolumeClaim:
           defaultMode: {{ v.mount_mode | default(0755) }}
-          name: {{ v.config_name }}
+          name: {{ v.name }}
 {% endfor %}
 {% endif %}
 {% if secrets is defined %}
 {% for v in secrets %}
-      - name: vol-{{ v.secret_name }}
+      - name: vol-{{ v.name }}
         persistentVolumeClaim:
           defaultMode: {{ v.mount_mode }}
-          name: {{ v.secret_name }}
+          name: {{ v.name }}
 {% endfor %}
 {% endif %}
 {% if service_account is defined %}

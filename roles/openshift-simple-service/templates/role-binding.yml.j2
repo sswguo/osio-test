@@ -1,15 +1,26 @@
-apiVersion: rbac.authorization.k8s.io/v1
+---
+apiVersion: authorization.openshift.io/v1
 kind: RoleBinding
+
 metadata:
-  labels:
-    app: {{ app }}
-    template: jenkins-persistent-template
-  name: {{ item.role_name }}
-  namespace: {{ namespace }}
+  name: "{{ item.name }}"
+  namespace: "{{ namespace }}"
+
 roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: edit
+  name: "{{ item.role }}"
+
 subjects:
-- kind: ServiceAccount
-  name: {{ item.service_account }}
+{% for sa in item.service_accounts | default([]) %}
+- kind: 'ServiceAccount'
+  name: {{ sa }}
+{% endfor %}
+
+{% for u in item.users | default([]) %}
+- kind: 'User'
+  name: {{ u }}
+{% endfor %}
+
+{% for g in item.groups | default([]) %}
+- kind: 'Group'
+  name: {{ g }}
+{% endfor %}

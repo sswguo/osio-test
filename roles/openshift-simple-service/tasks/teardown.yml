@@ -1,127 +1,83 @@
 ---
 - name: "Remove {{namespace}}:{{app}} deployment config"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: DeploymentConfig
-      metadata:
-        name: "{{ app }}"
-        namespace: "{{ namespace }}"
-  with_items:
-    - DeploymentConfig
-    - ReplicationController
+  include: remove.yml
+  vars:
+    items:
+      - kind: DeploymentConfig
+      - kind: ReplicationController
   when: "deployment_config|default(false)|bool == true"
 
 - name: "Remove {{namespace}}:{{app}} route"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: Route
-      metadata:
-        name: "{{ app }}"
-        namespace: "{{ namespace }}"
+  include: remove.yml
+  vars:
+    items:
+      - kind: Route
   when: route|default(false)|bool
 
 - name: "Remove {{namespace}}:{{app}} service account"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: ServiceAccount
-      metadata:
-        name: "{{ app }}"
-        namespace: "{{ namespace }}"
-  when: service_account|default(false)|bool
+  include: remove.yml
+  vars:
+    items:
+      - kind: ServiceAccount
+        name: "{{ service_account }}"
+  when: "service_account is defined"
 
 - name: "Remove {{namespace}}:{{app}} image stream"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: ImageStream
-      metadata:
-        name: "{{ app }}"
-        namespace: "{{ namespace }}"
+  include: remove.yml
+  vars:
+    items:
+      - kind: ImageStream
   when: "image_stream|default(false)|bool == true"
 
 - name: "Remove {{namespace}}:{{app}} services"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
+  include: remove.yml
+  vars:
+    items:
+      - kind: Service
         name: "{{ item.name }}"
-        namespace: "{{ namespace }}"
   with_items: "{{ports}}"
   when: ports is defined and (ports|length)>0
 
 - name: "Remove {{namespace}}:{{app}} secrets"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: Secret
-      metadata:
-        name: "{{ item.secret_name }}"
-        namespace: "{{ namespace }}"
+  include: remove.yml
+  vars:
+    items:
+      - kind: Secret
+        name: "{{ item.name }}"
   with_items: "{{secrets}}"
   when: secrets is defined and (secrets|length)>0
 
 - name: "Remove {{namespace}}:{{app}} configmaps"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: Secret
-      metadata:
-        name: "{{ item.config_name }}"
-        namespace: "{{ namespace }}"
+  include: remove.yml
+  vars:
+    items:
+      - kind: ConfigMap
+        name: "{{ item.name }}"
   with_items: "{{configmaps}}"
   when: configmaps is defined and (configmaps|length)>0
 
 - name: "Remove {{namespace}}:{{app}} persistent volume claims"
-  k8s:
-    host: "{{ k8s_host }}"
-    api_key: "{{ k8s_api_key }}"
-    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
-    username: "{{ k8s_user }}"
-    state: absent
-    definition:
-      apiVersion: v1
-      kind: Secret
-      metadata:
+  include: remove.yml
+  vars:
+    items:
+      - kind: PersistentVolumeClaim
         name: "{{ item.name }}"
-        namespace: "{{ namespace }}"
   with_items: "{{volumes}}"
   when: volumes is defined and (volumes|length)>0
+
+- name: "Remove {{namespace}}:{{app}} role bindings"
+  include: remove.yml
+  vars:
+    items:
+      - kind: RoleBinding
+        name: "{{ item.name }}"
+  with_items: "{{default_rolebindings + rolebindings}}"
+  when: "(default_rolebindings is defined) or (rolebindings is defined)"
+
+- name: "Remove {{namespace}}:{{app}} service account"
+  include: remove.yml
+  vars:
+    items:
+      - kind: ServiceAccount
+        name: "{{ service_account }}"
+  when: "service_account is defined"

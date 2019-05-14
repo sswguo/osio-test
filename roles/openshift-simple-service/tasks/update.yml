@@ -1,0 +1,48 @@
+---
+- name: "Update {{namespace}}:{{app}} service account"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-{{service_account}}-sa.yml"
+
+- name: "Update {{namespace}}:{{app}} role bindings"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-*-rb.yml"
+
+- name: "Update {{namespace}}:{{app}} persistent volume claims"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-*-pvc.yml"
+
+- name: "Update {{namespace}}:{{app}} image stream"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-is.yml"
+
+- name: "Update {{namespace}}:{{app}} configmaps"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-*-config.yml"
+
+- name: "Update {{namespace}}:{{app}} secrets"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-*-secret.yml"
+
+- name: "Update {{namespace}}:{{app}} deployment config"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-dc.yml"
+
+- name: "Update {{namespace}}:{{app}} services"
+  include: update-from-files.yml
+  vars:
+    update_fileglobs:
+      - "{{ generated_files }}/{{app}}-*-service.yml"

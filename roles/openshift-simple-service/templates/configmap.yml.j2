@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: "{{ app }}"
-  name: "{{ item.config_name }}"
+  name: "{{ item.name }}"
   namespace: "{{ namespace }}"
 data:
 {% for f in item.files %}

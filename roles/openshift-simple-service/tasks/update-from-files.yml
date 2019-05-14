@@ -1,0 +1,12 @@
+---
+- name: "Push object updates from file(s)"
+  k8s:
+    host: "{{ k8s_host }}"
+    api_key: "{{ k8s_api_key }}"
+    verify_ssl: "{{ k8s_verify_ssl|default(true) }}"
+    username: "{{ k8s_user }}"
+    namespace: "{{ k8s_namespace }}"
+    state: present
+    src: "{{ item }}"
+  with_fileglob: "{{ update_fileglobs }}"
+

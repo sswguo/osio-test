@@ -30,12 +30,12 @@ volumes:
     storage_size: 1Gi
 
 configmaps:
-  - config_name: indy-config
+  - name: indy-config
     mount_path: /opt/indy/etc/indy
     files:
       - files/main.conf
 
-  - config_name: indy-logging-config
+  - name: indy-logging-config
     mount_path: /opt/indy/etc/indy/logging
     files:
       - files/logging/logback.xml
