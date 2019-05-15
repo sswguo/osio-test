@@ -103,7 +103,7 @@ spec:
       - name: vol-{{ v.config_name }}
         #persistentVolumeClaim:
         configMap:
-          defaultMode: {{ v.mount_mode | default(0755) }}
+          defaultMode: {{ v.mount_mode | default("0755") }}
           name: {{ v.config_name }}
 {% endfor %}
 {% endif %}
