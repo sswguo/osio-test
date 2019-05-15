@@ -12,10 +12,9 @@ echo "Extras? $EXTRAS_FILE"
 
 rm -rf /opt/operations
 git clone https://github.com/sswguo/osio-test.git /opt/operations
-git checkout -b devel origin/devel
 
 cd /opt/operations
-
+git checkout -b devel origin/devel
 # Copy the secret file into group vars
 # ---
 # k8s_host: api.starter-us-east-1.openshift.com

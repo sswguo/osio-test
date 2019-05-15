@@ -95,10 +95,10 @@
   when: "push_changes|default(false)|bool == true"
 
   ##
-- name: "Display the dc yml file"
-  debug: var=item
-  with_file:
-    - "{{ generated_files }}/{{app}}-dc.yml"
+  #- name: "Display the dc yml file"
+  #debug: var=item
+  #with_file:
+  #  - "{{ generated_files }}/{{app}}-dc.yml"
   ##
 
 - name: "Update {{app}} deployment config"
