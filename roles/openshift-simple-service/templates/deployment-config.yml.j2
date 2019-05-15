@@ -100,10 +100,10 @@ spec:
 {% endif %}
 {% if configmaps is defined %}
 {% for v in configmaps %}
-      - name: vol-{{ v.name }}
-        persistentVolumeClaim:
-          defaultMode: {{ v.mount_mode | default(0755) }}
-          name: {{ v.name }}
+      - name: vol-{{ v.config_name }}
+        configMap:
+          defaultMode: {{ v.mount_mode | default("0755") }}
+          name: {{ v.config_name }}
 {% endfor %}
 {% endif %}
 {% if secrets is defined %}
