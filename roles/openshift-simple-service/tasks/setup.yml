@@ -94,6 +94,13 @@
     - "{{ generated_files }}/{{app}}-*-secret.yml"
   when: "push_changes|default(false)|bool == true"
 
+  ##
+- name: "Display the dc yml file"
+  debug: var=item
+  with_file:
+    - "{{ generated_files }}/{{app}}-dc.yml"
+  ##
+
 - name: "Update {{app}} deployment config"
   k8s:
     host: "{{ k8s_host }}"
