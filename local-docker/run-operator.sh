@@ -12,6 +12,7 @@ echo "Extras? $EXTRAS_FILE"
 
 rm -rf /opt/operations
 git clone https://github.com/sswguo/osio-test.git /opt/operations
+git checkout -b devel origin/devel
 
 cd /opt/operations
 
