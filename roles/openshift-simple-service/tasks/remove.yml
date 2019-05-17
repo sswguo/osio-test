@@ -12,4 +12,4 @@
       metadata:
         name: "{{ item.name|default(app) }}"
         namespace: "{{ namespace }}"
-    with_items: "{{ items }}"
+  with_items: "{{ items }}"
